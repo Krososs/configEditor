@@ -194,16 +194,17 @@ class ConfigDetails(BoxLayout):
     def add_cup_options(self):
         self.cup_options.clear_widgets()
         changePosition = Button(text='Change position', size_hint=(.25,
-                                                                   1))
+                                                                   1),
+                                background_color=(46 / 255, 45 / 255, 45 / 255, 1))
         changePosition.bind(on_press=self.open_position_popup)
 
-        deleteCup = Button(text='Delete', size_hint=(.25, 1))
+        deleteCup = Button(text='Delete', size_hint=(.25, 1), background_color=(46 / 255, 45 / 255, 45 / 255, 1))
         deleteCup.bind(on_press=self.open_delete_cup_popup)
 
-        addBrick = Button(text='Add brick', size_hint=(.25, 1))
+        addBrick = Button(text='Add brick', size_hint=(.25, 1), background_color=(46 / 255, 45 / 255, 45 / 255, 1))
         addBrick.bind(on_press=self.open_new_brick_popup)
 
-        backButton = Button(text='Back', size_hint=(.25, 1))
+        backButton = Button(text='Back', size_hint=(.25, 1), background_color=(46 / 255, 45 / 255, 45 / 255, 1))
         backButton.bind(on_press=self.back_to_cup_list)
 
         self.cup_options.add_widget(backButton)
