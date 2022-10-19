@@ -1,0 +1,564 @@
+#:import Factory kivy.factory.Factory
+
+Manager:
+	DummyScreen:
+	MainScreen:
+
+<Config>
+	canvas.before:
+		Color:
+			rgba: (48/255,48/255,50/255,1)
+		RoundedRectangle:
+			pos: self.pos
+			size: self.size
+<Cup>
+	canvas.before:
+		Color:
+			rgba: (48/255,48/255,50/255,1)
+		RoundedRectangle:
+			pos: self.pos
+			size: self.size
+<Brick>
+	number: number
+	canvas.before:
+		Color:
+			rgba: (48/255,48/255,50/255,1)
+		Rectangle:
+			pos: self.pos
+			size: self.size
+	BoxLayout:
+		size_hint: 1, 1
+		orientation: "horizontal"
+		BoxLayout:
+			size_hint: .5, 1
+			Label:
+				id: number
+		FloatLayout:
+			size_hint: .5, 1
+			Button:
+				pos_hint:{"x":.4, "y":.3}
+				size_hint: .2, .4
+				text: "Delete"
+				on_press: root.set_brick()
+<ConfigList>
+	name: "ConfigList"
+	error: error
+	name: name
+	conveyor_address: conveyor_address
+	conveyor_port: conveyor_port
+	sorter_address: sorter_address
+	sorter_port: sorter_port
+	scrollview: scrollview
+	BoxLayout:
+		size_hint: 1, 1
+		orientation: "horizontal"
+		BoxLayout:
+			orientation: "vertical"
+			size_hint: .5, 1
+			BoxLayout:
+				size_hint: .8, .1
+				pos_hint:{"x":.1}
+				Label:
+					text: "Configs"
+			ScrollView:
+				id: scrollview
+				size_hint: .8, .8
+				pos_hint:{"x":.1, "y":.1}
+		BoxLayout:
+			size_hint: .4, 1
+			orientation: "vertical"		
+			BoxLayout:
+				size_hint: 1, .1
+				Label:
+					text: "New config"
+			BoxLayout:							#CONFIG NAME
+				size_hint: 1, .1
+				orientation: "horizontal"
+				Label:
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					text: "Name"
+				TextInput:
+					id: name
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					multiline: False
+			BoxLayout:							#CONVEYOR ADDRESS
+				size_hint: 1, .1
+				orientation: "horizontal"
+				Label:
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					text: "Conveyor address"
+				TextInput:
+					id: conveyor_address
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					multiline: False
+					input_filter: 'int'
+			BoxLayout:							#CONVEYOR PORT
+				size_hint: 1, .1
+				orientation: "horizontal"
+				Label:
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					text: "Conveyor port"
+				TextInput:
+					id: conveyor_port
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					multiline: False
+					input_filter: 'int'
+			BoxLayout:							#SORTER ADDRESS
+				size_hint: 1, .1
+				orientation: "horizontal"
+				Label:
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					text: "Sorter address"
+				TextInput:
+					id: sorter_address
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					multiline: False
+					input_filter: 'int'
+			BoxLayout:							#SORTER PORT
+				size_hint: 1, .1
+				orientation: "horizontal"
+				Label:
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					text: "Sorter port"
+				TextInput:
+					id: sorter_port
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					multiline: False
+					input_filter: 'int'
+			FloatLayout:
+				size_hint: 1, .2
+				Button:
+					pos_hint:{"x":.3, "y":.3}
+					size_hint: .4, .4
+					text: "Save"
+					on_press: root.save_new_config()
+			BoxLayout:
+				size_hint: 1, .1
+				Label:
+					color: 1, 0, 0, 1
+					font_size: 20
+					id: error
+					valign: 'top'
+			BoxLayout:
+				size_hint: 1, .2
+		BoxLayout:
+		    size_hint: .1, 1
+<ConfigDetails>
+	name: "ConfigDetails"
+	config_name: config_name
+	conveyor_address: conveyor_address
+	conveyor_port: conveyor_port
+	sorter_address: sorter_address
+	sorter_port: sorter_port
+	save_button: save_button
+	default_button: default_button
+	scrollview: scrollview
+	cup_options: cup_options
+	list_name: list_name
+
+	BoxLayout:
+		size_hint: 1, 1
+		orientation: "horizontal"
+		BoxLayout:
+			size_hint: .4, 1
+			orientation: "vertical"
+			BoxLayout:
+				size_hint: 1, .1
+				Label:
+					id: config_name
+			BoxLayout:							#CONVEYOR ADDRESS
+				size_hint: 1, .15
+				orientation: "horizontal"
+				Label:
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					text: "Conveyor address"
+				TextInput:
+					id: conveyor_address
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					multiline: False
+					input_filter: 'int'
+					on_text: root.change_conveyor_address(self.text)
+			BoxLayout:							#CONVEYOR PORT
+				size_hint: 1, .15
+				orientation: "horizontal"
+				Label:
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					text: "Conveyor port"
+				TextInput:
+					id: conveyor_port
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					multiline: False
+					input_filter: 'int'
+					on_text: root.change_conveyor_port(self.text)
+			BoxLayout:							#SORTER ADDRESS
+				size_hint: 1, .15
+				orientation: "horizontal"
+				Label:
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					text: "Sorter address"
+				TextInput:
+					id: sorter_address
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					multiline: False
+					input_filter: 'int'
+					on_text: root.change_sorter_address(self.text)
+			BoxLayout:							#SORTER PORT
+				size_hint: 1, .15
+				orientation: "horizontal"
+				Label:
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					text: "Sorter port"
+				TextInput:
+					id: sorter_port
+					size_hint: .5, .6
+					pos_hint:{"y":.1}
+					multiline: False
+					input_filter: 'int'
+					on_text: root.change_sorter_port(self.text)
+			FloatLayout:						#SAVE CHANGES BUTTON
+				size_hint: 1, .2
+				Button:
+					pos_hint:{"x":.3, "y":.25}
+					size_hint: .4, .5
+					text: "Save changes"
+					id: save_button
+					on_press: root.save_changes()
+			FloatLayout:						#SET AS DEFAULT BUTTON
+				size_hint: 1, .2
+				Button:
+					pos_hint:{"x":.25, "y":.2}
+					size_hint: .5, .6
+					id: default_button
+					text: "Set as default"
+					on_press: root.set_config_as_default()
+			FloatLayout:						#ADD CUP BUTTON
+				size_hint: 1, .2
+				Button:
+					pos_hint:{"x":.25, "y":.2}
+					size_hint: .5, .6
+					text: "Add cup"
+					on_press: root.open_new_cup_popup()
+			FloatLayout:						#DELETE BUTTON
+				size_hint: 1, .2
+				Button:
+					pos_hint:{"x":.25, "y":.2}
+					size_hint: .5, .6
+					text: "Delete"
+					on_press: root.open_delete_config_popup()
+			FloatLayout:						#BACK BUTTON
+				size_hint: 1, .2
+				Button:
+					pos_hint:{"x":.25, "y":.2}
+					size_hint: .5, .6
+					text: "Back"
+					on_press: root.back_to_list()
+		BoxLayout:
+			size_hint: .6, 1
+			orientation: "vertical"
+			BoxLayout:
+				size_hint: 1, .1
+				Label:
+					id: list_name
+			ScrollView:
+				id: scrollview
+				size_hint: .8, .8
+				pos_hint:{"x":.1}
+			BoxLayout:
+				id: cup_options
+				size_hint: .8, .1
+				pos_hint:{"x":.1}
+				
+<MainScreen>:
+	name: "basic"
+	left: left
+	bottom: bottom
+	BoxLayout:
+		orientation: "horizontal"
+		BoxLayout:
+			id: left
+			orientation: "vertical"
+			size_hint: 1, 1
+			canvas.before:
+				Color:
+					rgba: (255/255,39/255,97/255,0)
+				Rectangle:
+					pos: self.pos
+					size: self.size
+			BoxLayout:
+				id: bottom
+				size_hint: 1, 1
+				orientation: "horizontal"
+				canvas.before:
+					Color:
+						rgba: (8/255,255/255,2/255,0)
+					Rectangle:
+						pos: self.pos
+						size: self.size
+
+<NewBrickPopup>:
+    title: ""
+    title_size: root.height *.01
+    multiline: False
+    auto_dismiss: False
+    separator_color: (0/255,0/255,0/255,0)
+	background_color: (75/255, 71/255, 71/255,1)
+	size_hint: .3, .6
+	category: category
+	subCategory: subCategory
+	buttons: buttons
+	error: error
+
+	BoxLayout:
+		orientation: "vertical"
+		size_hint: 1, 1
+		FloatLayout:
+			id: category
+			size_hint: 1, .2
+			orientation: "vertical"
+		FloatLayout:
+			id: subCategory
+			size_hint: 1, .2
+			orientation: "vertical"
+		BoxLayout:
+			size_hint: 1, .1
+			orientation: "vertical"
+			Label:
+				color: 1, 0, 0, 1
+				id: error
+		FloatLayout:
+			id: buttons
+			size_hint: 1, .2
+			orientation: "vertical"
+			Button:
+				pos_hint:{"x":.3, "y":.15}
+				size_hint: .4, .7
+				text: "Save"
+				height: 50
+				on_press: root.save_new_brick()
+		FloatLayout:
+			size_hint: 1, .2
+			Button:
+				pos_hint:{"x":.3, "y":.15}
+				size_hint: .4, .7
+				text: "Cancel"
+				on_press: root.dismiss()
+
+<NewCupPopup>:
+    title: ""
+    title_size: root.height *.01
+    multiline: False
+    auto_dismiss: False
+    separator_color: (0/255,0/255,0/255,0)
+	background_color: (75/255, 71/255, 71/255,1)
+	size_hint: .3, .4
+	error: error
+	name: name
+	position: position
+
+	BoxLayout:
+		orientation: "vertical"
+		size_hint: 1, 1
+		BoxLayout:
+			orientation: "horizontal"
+			size_hint: 1, .3
+			Label:
+				size_hint: .5, .7
+				text: "Name"
+			TextInput:
+				size_hint: .5, .7
+				multiline: False
+				id: name
+		BoxLayout:
+			orientation: "horizontal"
+			size_hint: 1, .3
+			Label:
+				size_hint: .5, .7
+				text: "Position"
+			TextInput:
+				size_hint: .5, .7
+				multiline: False
+				id: position
+				input_filter: 'int'
+		BoxLayout:
+			orientation: "horizontal"
+			size_hint: 1, .2
+			Label:
+				color: 1, 0, 0, 1
+				id: error
+		FloatLayout:
+			size_hint: 1, .25
+			Button:
+				pos_hint:{"x":.3, "y":.1}
+				size_hint: .4, .8
+				text: "Ok"
+				on_press: root.add_cup()
+		FloatLayout:
+			size_hint: 1, .25
+			Button:
+				pos_hint:{"x":.3, "y":.1}
+				size_hint: .4, .8
+				text: "Cancel"
+				on_press: root.dismiss()
+
+<ChangePositionPopup>:
+    title: ""
+    title_size: root.height *.01
+    multiline: False
+    auto_dismiss: False
+    separator_color: (0/255,0/255,0/255,0)
+	background_color: (75/255, 71/255, 71/255,1)
+	size_hint: .3, .4
+	error: error
+	position: position
+
+	BoxLayout:
+		orientation: "vertical"
+		size_hint: 1, 1
+		BoxLayout:
+			orientation: "horizontal"
+			size_hint: 1, .3
+			Label:
+				size_hint: .5, .5
+				text: "Position"
+			TextInput:
+				size_hint: .5, .5
+				multiline: False
+				id: position
+				input_filter: 'int'
+		BoxLayout:
+			orientation: "horizontal"
+			size_hint: 1, .2
+			Label:
+				color: 1, 0, 0, 1
+				id: error
+		FloatLayout:
+			size_hint: 1, .2
+			Button:
+				pos_hint:{"x":.3, "y":.1}
+				size_hint: .4, .8
+				text: "Ok"
+				on_press: root.change_cup_position()
+		FloatLayout:
+			size_hint: 1, .2
+			Button:
+				pos_hint:{"x":.3, "y":.1}
+				size_hint: .4, .8
+				text: "Cancel"
+				on_press: root.dismiss()
+
+<DeleteCupPopup>:
+	title: ""
+	title_size: root.height *.05
+	multiline: False
+	auto_dismiss: False
+	separator_color: (0/255,0/255,0/255,0)
+	background_color: (75/255, 71/255, 71/255,1)
+	size_hint: .3, .4
+	BoxLayout:
+		orientation: "vertical"
+		size_hint: 1, 1
+		Label:
+			size_hint: 1, .5
+			font_size: 20
+			text: "Confirm"
+		FloatLayout:
+			size_hint: 1, .5
+			Button:
+				pos_hint:{"x":.3, "y":.1}
+				size_hint: .4, .8
+				text: "Ok"
+				on_press: root.delete_cup()
+		FloatLayout:
+			size_hint: 1, .5
+			Button:
+				pos_hint:{"x":.3, "y":.1}
+				size_hint: .4, .8
+				text: "Cancel"
+				on_press: root.dismiss()
+
+<DeleteBrickPopup>
+	title: ""
+	auto_dismiss: False
+	multiline: False
+	title_size: root.height *.05
+	separator_color: (0/255,0/255,0/255,0)
+	background_color: (75/255, 71/255, 71/255,1)
+	size_hint: .3, .4
+	BoxLayout:
+		orientation: "vertical"
+		size_hint: 1, 1
+		Label:
+			size_hint: 1, .5
+			font_size: 20
+			text: "Confirm"
+		FloatLayout:
+			size_hint: 1, .4
+			Button:
+				pos_hint:{"x":.3, "y":.1}
+				size_hint: .4, .8
+				text: "Ok"
+				on_press: root.delete_brick()
+		FloatLayout:
+			size_hint: 1, .4
+			Button:
+				pos_hint:{"x":.3, "y":.1}
+				size_hint: .4, .8
+				text: "Cancel"
+				on_press: root.dismiss()
+
+<DeleteConfigPopup>:
+	title: ""
+	title_size: root.height *.01
+	multiline: False
+	auto_dismiss: False
+	separator_color: (0/255,0/255,0/255,0)
+	background_color: (75/255, 71/255, 71/255,1)
+	size_hint: .3, .4
+	error: error
+
+	BoxLayout:
+		orientation: "vertical"
+		size_hint: 1, 1
+		Label:
+			size_hint: 1, .25
+			font_size: 22
+			text: "Confirm"
+		BoxLayout:
+		    size_hint: 1, .25
+            Label:
+                color: 1, 0, 0, 1
+                font_size: 16
+                id: error
+                valign: 'center'
+                halign: 'center'
+		FloatLayout:
+			size_hint: 1, .25
+			Button:
+				pos_hint:{"x":.3, "y":.1}
+				size_hint: .4, .8
+				text: "Ok"
+				on_press: root.delete_config()
+		FloatLayout:
+			size_hint: 1, .25
+			Button:
+				pos_hint:{"x":.3, "y":.1}
+				size_hint: .4, .8
+				text: "Cancel"
+				on_press: root.dismiss()
