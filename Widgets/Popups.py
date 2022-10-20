@@ -27,9 +27,9 @@ class NewBrickPopup(Popup):
         self.categoryButton.text = category
         self.selectedCategory = category
 
-    def select_sub_category(self, instance, subCategory):
-        self.subCategoryButton.text = subCategory
-        self.selectedSubCategory = subCategory
+    def select_sub_category(self, instance, sub_category):
+        self.subCategoryButton.text = sub_category
+        self.selectedSubCategory = sub_category
 
     def init_category(self):
         self.category.clear_widgets()
@@ -74,7 +74,7 @@ class NewBrickPopup(Popup):
         self.subCategoryDropdown.add_widget(btn)
 
     def save_new_brick(self):
-        if self.selectedSubCategory == None:
+        if self.selectedSubCategory is None:
             self.error.text = "Select the correct category"
         else:
             self.dismiss()
@@ -131,9 +131,9 @@ class NewCupPopup(Popup):
         self._parent = parent
 
     def add_cup(self):
-        if (len(self.name.text) == 0):
+        if len(self.name.text) == 0:
             self.error.text = "Name can not be empty"
-        elif (len(self.position.text) == 0):
+        elif len(self.position.text) == 0:
             self.error.text = "Position can not be empty"
         else:
             self._parent.add_new_cup(self.name.text, self.position.text)

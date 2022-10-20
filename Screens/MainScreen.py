@@ -22,11 +22,11 @@ class MainScreen(Screen):
 
     def show_config_list(self):
         self.configList.init(self)
-        self.bottom.clear_widgets();
+        self.bottom.clear_widgets()
         self.bottom.add_widget(self.configList)
 
     def show_config_details(self, config):
-        self.bottom.clear_widgets();
+        self.bottom.clear_widgets()
         self.configDetails.set_config(config)
         self.configDetails.set_parent(self)
         self.configDetails.init()

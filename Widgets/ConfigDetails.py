@@ -70,7 +70,7 @@ class ConfigDetails(BoxLayout):
                     self.sorter_port_ph)):
             self.error.text = "Wrong address or port format"
         else:
-            self.error.text=""
+            self.error.text = ""
             self.config.set_address('conveyor_address',
                                     self.conveyor_address_ph)
             self.config.set_address('conveyor_port', self.conveyor_port_ph)
@@ -124,28 +124,28 @@ class ConfigDetails(BoxLayout):
             self.config.add_brick(self.selectedCup.name, brick)
             self.show_cup_details(self.selectedCup)
 
-    def add_new_cup(self, cupName, cupPosition):
+    def add_new_cup(self, cup_name, cup_position):
 
-        if self.config.config_includes_cup(cupName):
+        if self.config.config_includes_cup(cup_name):
             self.popup.error.text = \
                 'Config already contains cup with given name'
-        elif self.config.position_taken(cupPosition):
+        elif self.config.position_taken(cup_position):
             self.popup.error.text = 'Position is already taken'
         else:
             self.popup.dismiss()
-            self.config.add_cup(cupName, int(cupPosition))
+            self.config.add_cup(cup_name, int(cup_position))
             self.init()
 
-    def change_cup_position(self, newPosition):
-        if len(newPosition) == 0:
+    def change_cup_position(self, new_position):
+        if len(new_position) == 0:
             self.popup.error.text = 'Position can not be empty'
-        elif newPosition == str(self.selectedCup.position):
+        elif new_position == str(self.selectedCup.position):
             self.popup.dismiss()
-        elif self.config.position_taken(newPosition):
+        elif self.config.position_taken(new_position):
             self.popup.error.text = 'Position is already taken'
         else:
             self.popup.dismiss()
-            self.selectedCup.set_position(int(newPosition))
+            self.selectedCup.set_position(int(new_position))
             self.config.save()
             self.selectedCup.show_details()
             self.show_cup_details(self.selectedCup)
@@ -208,24 +208,24 @@ class ConfigDetails(BoxLayout):
 
     def add_cup_options(self):
         self.cup_options.clear_widgets()
-        changePosition = Button(text='Change position', size_hint=(.25,
-                                                                   1),
-                                background_color=(46 / 255, 45 / 255, 45 / 255, 1))
-        changePosition.bind(on_press=self.open_position_popup)
+        change_position = Button(text='Change position', size_hint=(.25,
+                                                                    1),
+                                 background_color=(46 / 255, 45 / 255, 45 / 255, 1))
+        change_position.bind(on_press=self.open_position_popup)
 
-        deleteCup = Button(text='Delete', size_hint=(.25, 1), background_color=(46 / 255, 45 / 255, 45 / 255, 1))
-        deleteCup.bind(on_press=self.open_delete_cup_popup)
+        delete_cup = Button(text='Delete', size_hint=(.25, 1), background_color=(46 / 255, 45 / 255, 45 / 255, 1))
+        delete_cup.bind(on_press=self.open_delete_cup_popup)
 
-        addBrick = Button(text='Add brick', size_hint=(.25, 1), background_color=(46 / 255, 45 / 255, 45 / 255, 1))
-        addBrick.bind(on_press=self.open_new_brick_popup)
+        add_brick = Button(text='Add brick', size_hint=(.25, 1), background_color=(46 / 255, 45 / 255, 45 / 255, 1))
+        add_brick.bind(on_press=self.open_new_brick_popup)
 
-        backButton = Button(text='Back', size_hint=(.25, 1), background_color=(46 / 255, 45 / 255, 45 / 255, 1))
-        backButton.bind(on_press=self.back_to_cup_list)
+        back_button = Button(text='Back', size_hint=(.25, 1), background_color=(46 / 255, 45 / 255, 45 / 255, 1))
+        back_button.bind(on_press=self.back_to_cup_list)
 
-        self.cup_options.add_widget(backButton)
-        self.cup_options.add_widget(changePosition)
-        self.cup_options.add_widget(deleteCup)
-        self.cup_options.add_widget(addBrick)
+        self.cup_options.add_widget(back_button)
+        self.cup_options.add_widget(change_position)
+        self.cup_options.add_widget(delete_cup)
+        self.cup_options.add_widget(add_brick)
 
     def show_cup_details(self, cup):
         self.selectedCup = cup

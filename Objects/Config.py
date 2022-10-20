@@ -29,35 +29,35 @@ class Config(ButtonBehavior, BoxLayout):
             data = pickle.load(f)
         return data['default'] == self.name
 
-    def add_cup(self, cupName, cupPosition):
+    def add_cup(self, cup_name, cup_position):
         cup = Cup()
-        cup.init(cupName, cupPosition)
+        cup.init(cup_name, cup_position)
         self.cups.append(cup)
         self.save()
 
-    def add_brick(self, cupName, brick):
-        [c for c in self.cups if c.name == cupName][0].add_brick(brick)
+    def add_brick(self, cup_name, brick):
+        [c for c in self.cups if c.name == cup_name][0].add_brick(brick)
         self.save()
 
-    def cup_includes_brick(self, cupName, brick):
+    def cup_includes_brick(self, cup_name, brick):
         return brick in [c for c in self.cups if c.name
-                         == cupName][0].bricks
+                         == cup_name][0].bricks
 
-    def position_taken(self, cupPosition):
+    def position_taken(self, cup_position):
         for cup in self.cups:
-            if cup.position == int(cupPosition):
+            if cup.position == int(cup_position):
                 return True
         return False
 
-    def config_includes_cup(self, cupName):
+    def config_includes_cup(self, cup_name):
         for cup in self.cups:
-            if cup.name == cupName:
+            if cup.name == cup_name:
                 return True
         return False
 
-    def delete_cup(self, cupName):
+    def delete_cup(self, cup_name):
         for cup in self.cups:
-            if cup.name == cupName:
+            if cup.name == cup_name:
                 self.cups.remove(cup)
         self.save()
 
@@ -105,13 +105,13 @@ class Config(ButtonBehavior, BoxLayout):
                     self.set_address(line, data[line])
 
     def set_address(self, line, address):
-        if line == 'conveyor_address' and address != None:
+        if line == 'conveyor_address' and address is not None:
             self.conveyor_address = address
-        elif line == 'conveyor_port' and address != None:
+        elif line == 'conveyor_port' and address is not None:
             self.conveyor_port = address
-        elif line == 'sorter_address' and address != None:
+        elif line == 'sorter_address' and address is not None:
             self.sorter_address = address
-        elif line == 'sorter_port' and address != None:
+        elif line == 'sorter_port' and address is not None:
             self.sorter_port = address
 
     def set_name(self, name):
@@ -121,6 +121,7 @@ class Config(ButtonBehavior, BoxLayout):
         else:
             self.add_widget(Label(text=self.name))
 
-    def line_is_cup(self, line):
+    @staticmethod
+    def line_is_cup(line):
         return line == 'conveyor_address' or line == 'conveyor_port' \
                or line == 'sorter_address' or line == 'sorter_port'

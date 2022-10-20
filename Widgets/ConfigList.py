@@ -74,7 +74,7 @@ class ConfigList(BoxLayout):
                     except json.decoder.JSONDecodeError:
                         data = None
 
-                config = Config();
+                config = Config()
                 config.load(data, name[0], self)
                 self.configs.append(config)
 
