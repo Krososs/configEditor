@@ -8,6 +8,7 @@ from Widgets.Popups import NewBrickPopup, NewCupPopup, DeleteCupPopup, \
     DeleteConfigPopup, ChangePositionPopup, DeleteBrickPopup
 
 from Objects.Brick import Brick
+from Utils import StringUtil
 
 
 class ConfigDetails(BoxLayout):
@@ -31,6 +32,11 @@ class ConfigDetails(BoxLayout):
 
     def set_config(self, config):
         self.config = config
+        self.conveyor_address_ph = self.config.conveyor_address
+        self.conveyor_port_ph = self.config.conveyor_port
+        self.sorter_address_ph = self.config.sorter_address
+        self.sorter_port_ph = self.config.sorter_port
+
         self.conveyor_address.text = self.config.conveyor_address
         self.conveyor_port.text = self.config.conveyor_port
         self.sorter_address.text = self.config.sorter_address
@@ -58,15 +64,23 @@ class ConfigDetails(BoxLayout):
             self.sorter_port_ph = text
 
     def save_changes(self):
-        self.config.set_address('conveyor_address',
-                                self.conveyor_address_ph)
-        self.config.set_address('conveyor_port', self.conveyor_port_ph)
-        self.config.set_address('sorter_address',
-                                self.sorter_address_ph)
-        self.config.set_address('sorter_port', self.sorter_port_ph)
-        self.config.save()
+        if (StringUtil.wrong_address_format(self.conveyor_address_ph) or StringUtil.wrong_address_format(
+                self.conveyor_port_ph)
+                or StringUtil.wrong_address_format(self.sorter_address_ph) or StringUtil.wrong_address_format(
+                    self.sorter_port_ph)):
+            self.error.text = "Wrong address or port format"
+        else:
+            self.error.text=""
+            self.config.set_address('conveyor_address',
+                                    self.conveyor_address_ph)
+            self.config.set_address('conveyor_port', self.conveyor_port_ph)
+            self.config.set_address('sorter_address',
+                                    self.sorter_address_ph)
+            self.config.set_address('sorter_port', self.sorter_port_ph)
+            self.config.save()
 
     def back_to_list(self):
+        self.cup_options.clear_widgets()
         self._parent.show_config_list()
 
     def init(self):
@@ -77,6 +91,7 @@ class ConfigDetails(BoxLayout):
 
         self.config_name.text = self.config.name
         self.list_name.text = 'Cups'
+        self.error.text = ''
 
         if self.config.is_default():
             self.config_name.text += ' (Default)'
@@ -212,7 +227,7 @@ class ConfigDetails(BoxLayout):
         self.cup_options.add_widget(deleteCup)
         self.cup_options.add_widget(addBrick)
 
-    def show_cup_details(self, cup):  # TODO
+    def show_cup_details(self, cup):
         self.selectedCup = cup
         self.list_name.text = self.selectedCup.name + " (" + str(len(self.selectedCup.bricks)) + ")"
         self.scrollview.scroll_y = 1

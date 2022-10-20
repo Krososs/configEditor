@@ -5,6 +5,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 
 from Objects.Config import Config
+from Utils import StringUtil
 
 
 class ConfigList(BoxLayout):
@@ -38,13 +39,20 @@ class ConfigList(BoxLayout):
             self.error.text = "Fill in all fields"
         elif (os.path.exists(self.directory + '/' + self.name.text + '.json')):
             self.error.text = "File already exist"
+        elif StringUtil.name_contains_forbidden_characters(self.name.text):
+            self.error.text = "Name contains forbidden characters"
+        elif (StringUtil.wrong_address_format(self.conveyor_address.text) or StringUtil.wrong_address_format(
+                self.conveyor_port.text)
+              or StringUtil.wrong_address_format(self.sorter_address.text) or StringUtil.wrong_address_format(
+                    self.sorter_port.text)):
+            self.error.text = "Wrong address or port format"
         else:
             self.error.text = ""
             data = {
-                "conveyor_address": self.conveyor_address.text,
-                "conveyor_port": self.conveyor_port.text,
-                "sorter_address": self.sorter_address.text,
-                "sorter_port": self.sorter_port.text
+                "conveyor_address": str(self.conveyor_address.text).replace(" ", ""),
+                "conveyor_port": str(self.conveyor_port.text).replace(" ", ""),
+                "sorter_address": str(self.sorter_address.text).replace(" ", ""),
+                "sorter_port": str(self.sorter_port.text).replace(" ", "")
             }
             with open(self.directory + '/' + self.name.text + '.json', 'w', encoding='utf8') as json_file:
                 json.dump(data, json_file, indent=3, ensure_ascii=True)

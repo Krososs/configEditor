@@ -186,6 +186,7 @@ Manager:
 	scrollview: scrollview
 	cup_options: cup_options
 	list_name: list_name
+	error: error
 
 	BoxLayout:
 		size_hint: 1, 1
@@ -266,6 +267,12 @@ Manager:
                         pos_hint:{"y":.1}
                         multiline: False
                         on_text: root.change_sorter_port(self.text)
+            BoxLayout:
+			    size_hint: 1, .1
+			    orientation: "vertical"
+			    Label:
+				    color: 1, 0, 0, 1
+				    id: error
 			FloatLayout:						#SAVE CHANGES BUTTON
 				size_hint: 1, .1
 				Button:
