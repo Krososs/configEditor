@@ -11,7 +11,7 @@ from kivy.lang import Builder
 from Screens.DummyScreen import DummyScreen
 from Screens.MainScreen import MainScreen
 
-Builder.load_file("ConfigEditorApp.kv")
+Builder.load_file("main.kv")
 screen_manager = ScreenManager()
 screen_manager.add_widget(DummyScreen())
 screen_manager.add_widget(MainScreen())
