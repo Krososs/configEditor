@@ -9,7 +9,7 @@ class Cup(ButtonBehavior, BoxLayout):
         self.name = None
         self.position = None
         self._parent = None
-        self.bricks = []
+        self.parts = []
 
     def on_press(self):
         self._parent.show_cup_details(self)
@@ -29,8 +29,11 @@ class Cup(ButtonBehavior, BoxLayout):
         self.name = name
         self.position = position
 
-    def add_brick(self, brick):
-        self.bricks.append(brick)
+    def contains_part(self, part):
+        return part in self.parts
 
-    def delete_brick(self, brick):
-        self.bricks.remove(brick)
+    def add_part(self, part):
+        self.parts.append(part)
+
+    def remove_part(self, part):
+        self.parts.remove(part)

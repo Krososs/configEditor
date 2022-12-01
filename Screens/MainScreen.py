@@ -1,8 +1,4 @@
-import os
-import pickle
-
 from kivy.uix.screenmanager import Screen
-
 from Widgets.ConfigList import ConfigList
 from Widgets.ConfigDetails import ConfigDetails
 
@@ -14,15 +10,11 @@ class MainScreen(Screen):
         self.configDetails = ConfigDetails()
 
     def on_enter(self):
-        if not os.path.exists('././settings.cfg'):
-            data = dict(default='None')
-            with open('././settings.cfg', 'wb') as f:
-                pickle.dump(data, f)
         self.show_config_list()
 
     def show_config_list(self):
-        self.configList.init(self)
         self.bottom.clear_widgets()
+        self.configList.init(self)
         self.bottom.add_widget(self.configList)
 
     def show_config_details(self, config):

@@ -35,14 +35,6 @@ class Config(ButtonBehavior, BoxLayout):
         self.cups.append(cup)
         self.save()
 
-    def add_brick(self, cup_name, brick):
-        [c for c in self.cups if c.name == cup_name][0].add_brick(brick)
-        self.save()
-
-    def cup_includes_brick(self, cup_name, brick):
-        return brick in [c for c in self.cups if c.name
-                         == cup_name][0].bricks
-
     def position_taken(self, cup_position):
         for cup in self.cups:
             if cup.position == int(cup_position):
@@ -78,7 +70,7 @@ class Config(ButtonBehavior, BoxLayout):
 
         for cup in self.cups:
             data[cup.name] = {'position': cup.position,
-                              'bricks': cup.bricks}
+                              'bricks': cup.parts}
 
         with open(self._parent.directory + '/' + self.name + '.json',
                   'w+', encoding='utf8') as json_file:
@@ -99,7 +91,7 @@ class Config(ButtonBehavior, BoxLayout):
                     new_cup = Cup()
                     new_cup.init(line, data[line]['position'])
                     for brick in data[line]['bricks']:
-                        new_cup.add_brick(brick)
+                        new_cup.add_part(brick)
                     self.cups.append(new_cup)
                 else:
                     self.set_address(line, data[line])
