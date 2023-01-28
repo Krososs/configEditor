@@ -1,5 +1,6 @@
 from kivy.uix.popup import Popup
 from kivy.uix.image import AsyncImage
+from Utils.Constants import Constants
 
 
 class ImagePopup(Popup):
@@ -50,9 +51,9 @@ class NewCupPopup(Popup):
 
     def add_cup(self):
         if len(self.name.text) == 0:
-            self.error.text = "Name can not be empty"
+            self.error.text = Constants.ER_NAME_EMPTY
         elif len(self.position.text) == 0:
-            self.error.text = "Position can not be empty"
+            self.error.text = Constants.ER_POSITION_EMPTY
         else:
             self._parent.add_new_cup(self.name.text, self.position.text)
 

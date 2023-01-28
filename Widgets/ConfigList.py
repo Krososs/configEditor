@@ -6,6 +6,7 @@ from kivy.uix.gridlayout import GridLayout
 
 from Objects.Config import Config
 from Utils import StringUtil
+from Utils.Constants import Constants
 
 
 class ConfigList(BoxLayout):
@@ -35,17 +36,18 @@ class ConfigList(BoxLayout):
         if not os.path.exists(self.directory):
             os.makedirs(self.directory)
         if len(self.name.text) == 0:
-            self.error.text = "Name can not be empty"
+            self.error.text = Constants.ER_NAME_EMPTY
         elif (os.path.exists(self.directory + '/' + self.name.text + '.json')):
-            self.error.text = "File already exist"
+            self.error.text = Constants.ER_FILE_EXIST
         elif StringUtil.name_contains_forbidden_characters(self.name.text):
-            self.error.text = "Name contains forbidden characters"
+            self.error.text = Constants.ER_FORBIDDEN_CHARS
         else:
             self.error.text = ""
             data = {}
             with open(self.directory + '/' + self.name.text + '.json', 'w', encoding='utf8') as json_file:
                 json.dump(data, json_file, indent=3, ensure_ascii=True)
             self.display_configs()
+            self.name.text = ""
 
     def load_configs(self):
         self.configs = []

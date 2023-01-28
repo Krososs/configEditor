@@ -14,7 +14,6 @@ class PartNode(BoxLayout):
         self.text = kwargs.pop('text', 'None')
         self.source = kwargs.pop('source', 'None')
         super(PartNode, self).__init__(**kwargs)
-        print("PartNode: constructor")
 
         self.height = dp(55)
         self.child_table = []

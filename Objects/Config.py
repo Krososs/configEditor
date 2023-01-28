@@ -86,6 +86,6 @@ class Config(ButtonBehavior, BoxLayout):
     def set_name(self, name):
         self.name = str(name)
         if self.is_default():
-            self.add_widget(Label(text=self.name + ' (Default)'))
+            self.add_widget(Label(text=self.name + ' (Default)', font_size=20))
         else:
-            self.add_widget(Label(text=self.name))
+            self.add_widget(Label(text=self.name, font_size=20))

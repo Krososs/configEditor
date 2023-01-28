@@ -2,6 +2,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
 from Utils import LegoUtil
 from Utils.Database import Database
+from Utils.Constants import Constants
 
 
 class LoadingScreen(Screen):
@@ -33,4 +34,4 @@ class LoadingScreen(Screen):
             self.get_category_trigger()
         else:
             Database.create_databse(self.cat_arr)
-            self.manager.current = 'basic'
+            self.manager.current = Constants.SCREEN_BASIC

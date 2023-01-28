@@ -3,6 +3,7 @@ import os
 from kivy.uix.screenmanager import Screen, NoTransition
 from kivy.clock import Clock
 from Utils.Database import Database
+from Utils.Constants import Constants
 
 
 class DummyScreen(Screen):
@@ -21,9 +22,9 @@ class DummyScreen(Screen):
             data = pickle.load(f)
 
         if data['API_KEY'] == 'None':
-            self.manager.current = "api"
+            self.manager.current = Constants.SCREEN_API
         else:
             if not Database.database_exist():
-                self.manager.current = "loading"
+                self.manager.current = Constants.SCREEN_LOADING
             else:
-                self.manager.current = "basic"
+                self.manager.current = Constants.SCREEN_BASIC

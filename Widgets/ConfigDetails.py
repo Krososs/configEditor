@@ -7,6 +7,7 @@ from kivy.uix.button import Button
 from kivy.uix.treeview import TreeView
 
 from Utils.Database import Database
+from Utils.Constants import Constants
 from Widgets.Popups import NewCupPopup, DeleteCupPopup, \
     DeleteConfigPopup, ChangePositionPopup
 
@@ -40,7 +41,7 @@ class ConfigDetails(BoxLayout):
         self.scrollview.clear_widgets()
 
         self.config_name.text = self.selectedConfig.name
-        self.list_name.text = 'Cups'
+        self.list_name.text = Constants.STR_CUPS
 
         if self.selectedConfig.is_default():
             self.config_name.text += ' (Default)'
@@ -59,9 +60,9 @@ class ConfigDetails(BoxLayout):
 
         if self.selectedConfig.config_includes_cup(cup_name):
             self.popup.error.text = \
-                'Config already contains cup with given name'
+                Constants.ER_CUP_NAME_TAKEN
         elif self.selectedConfig.position_taken(cup_position):
-            self.popup.error.text = 'Position is already taken'
+            self.popup.error.text = Constants.ER_POSITION_TAKEN
         else:
             self.popup.dismiss()
             self.selectedConfig.add_cup(cup_name, int(cup_position))
@@ -69,17 +70,16 @@ class ConfigDetails(BoxLayout):
 
     def change_cup_position(self, new_position):
         if len(new_position) == 0:
-            self.popup.error.text = 'Position can not be empty'
+            self.popup.error.text = Constants.ER_POSITION_EMPTY
         elif new_position == str(self.selectedCup.position):
             self.popup.dismiss()
         elif self.selectedConfig.position_taken(new_position):
-            self.popup.error.text = 'Position is already taken'
+            self.popup.error.text = Constants.ER_POSITION_TAKEN
         else:
             self.popup.dismiss()
             self.selectedCup.set_position(int(new_position))
             self.selectedConfig.save()
-            self.selectedCup.show_details()
-            self.show_cup_details(self.selectedCup)
+            self.update_list_details()
 
     def delete_cup(self):
         self.selectedConfig.delete_cup(self.selectedCup.name)
@@ -88,7 +88,7 @@ class ConfigDetails(BoxLayout):
     def delete_config(self):
         if self.selectedConfig.is_default():
             self.popup.error.text = \
-                'You can not delete default config'
+                Constants.ER_DELETE_DEFAULT
         else:
             self.popup.dismiss()
             self.selectedConfig.delete()
@@ -96,6 +96,8 @@ class ConfigDetails(BoxLayout):
 
     # Config option buttons
     def set_config_as_default(self):
+        self.config_name.text += ' (Default)'
+        self.default_button.disabled = True
         with open('././settings.cfg', 'rb') as f:
             data = pickle.load(f)
             with open('././settings.cfg', 'wb') as f:
@@ -130,15 +132,17 @@ class ConfigDetails(BoxLayout):
 
     def add_cup_options(self):
         self.cup_options.clear_widgets()
-        change_position = Button(text='Change position', size_hint=(.25,
-                                                                    1),
+        change_position = Button(text=Constants.STR_CHANGE_POSITION, size_hint=(.25,
+                                                                                1),
                                  background_color=(46 / 255, 45 / 255, 45 / 255, 1))
         change_position.bind(on_press=self.open_position_popup)
 
-        delete_cup = Button(text='Delete', size_hint=(.25, 1), background_color=(46 / 255, 45 / 255, 45 / 255, 1))
+        delete_cup = Button(text=Constants.STR_DELETE, size_hint=(.25, 1),
+                            background_color=(46 / 255, 45 / 255, 45 / 255, 1))
         delete_cup.bind(on_press=self.open_delete_cup_popup)
 
-        back_button = Button(text='Back', size_hint=(.25, 1), background_color=(46 / 255, 45 / 255, 45 / 255, 1))
+        back_button = Button(text=Constants.STR_BACK, size_hint=(.25, 1),
+                             background_color=(46 / 255, 45 / 255, 45 / 255, 1))
         back_button.bind(on_press=self.back_to_cup_list)
 
         self.cup_options.add_widget(back_button)
@@ -148,7 +152,6 @@ class ConfigDetails(BoxLayout):
     def show_cup_details(self, cup):
         self.selectedCup = cup
         self.update_list_details()
-        # self.list_name.text = self.selectedCup.name + " (" + str(len(self.selectedCup.parts)) + ")"
         self.scrollview.scroll_y = 1
         self.add_cup_options()
         self.layout.clear_widgets()
@@ -173,7 +176,8 @@ class ConfigDetails(BoxLayout):
         self.scrollview.add_widget(self.layout)
 
     def update_list_details(self):
-        self.list_name.text = self.selectedCup.name + " (" + str(len(self.selectedCup.parts)) + ")"
+        self.list_name.text = self.selectedCup.name + " (" + str(
+            len(self.selectedCup.parts)) + ") " + " position: " + str(self.selectedCup.position)
 
     def resize(self, height):
         self.layout.height += height

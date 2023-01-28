@@ -16,8 +16,8 @@ class Cup(ButtonBehavior, BoxLayout):
 
     def show_details(self):
         self.clear_widgets()
-        self.add_widget(Label(text=self.name))
-        self.add_widget(Label(text="Position: " + str(self.position)))
+        self.add_widget(Label(text=self.name, font_size=18))
+        self.add_widget(Label(text="Position: " + str(self.position), font_size=18))
 
     def set_parent(self, parent):
         self._parent = parent
