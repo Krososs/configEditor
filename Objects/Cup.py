@@ -33,7 +33,9 @@ class Cup(ButtonBehavior, BoxLayout):
         return part in self.parts
 
     def add_part(self, part):
-        self.parts.append(part)
+        if not self.contains_part(part):
+            self.parts.append(part)
 
     def remove_part(self, part):
-        self.parts.remove(part)
+        if self.contains_part(part):
+            self.parts.remove(part)

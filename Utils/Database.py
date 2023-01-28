@@ -2,6 +2,7 @@ from pymongo import MongoClient
 
 client = MongoClient('localhost', 27017)
 
+
 class Database:
     DB_NAME = 'ConfigEditor'
 
@@ -20,8 +21,7 @@ class Database:
             categories.insert_one(category)
 
     @staticmethod
-    def get_cagetogries():
+    def get_categories():
         db = client.ConfigEditor
         categories = db.categories
         return categories
-

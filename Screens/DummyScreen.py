@@ -14,7 +14,6 @@ class DummyScreen(Screen):
 
         if not os.path.exists('././settings.cfg'):
             data = dict(default='None', API_KEY='None')
-            print(data)
             with open('././settings.cfg', 'wb') as f:
                 pickle.dump(data, f)
 

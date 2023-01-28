@@ -15,10 +15,6 @@ class Config(ButtonBehavior, BoxLayout):
         super(Config, self).__init__(**kwargs)
         self.cups = []
         self.name = None
-        self.conveyor_address = None
-        self.conveyor_port = None
-        self.sorter_address = None
-        self.sorter_port = None
         self._parent = None
 
     def on_press(self):
@@ -61,13 +57,7 @@ class Config(ButtonBehavior, BoxLayout):
                       )
 
     def save(self):
-        data = {
-            'conveyor_address': self.conveyor_address,
-            'conveyor_port': self.conveyor_port,
-            'sorter_address': self.sorter_address,
-            'sorter_port': self.sorter_port,
-        }
-
+        data = {}
         for cup in self.cups:
             data[cup.name] = {'position': cup.position,
                               'bricks': cup.parts}
@@ -87,24 +77,11 @@ class Config(ButtonBehavior, BoxLayout):
 
         if data is not None:
             for line in data:
-                if not self.line_is_cup(line):
-                    new_cup = Cup()
-                    new_cup.init(line, data[line]['position'])
-                    for brick in data[line]['bricks']:
-                        new_cup.add_part(brick)
-                    self.cups.append(new_cup)
-                else:
-                    self.set_address(line, data[line])
-
-    def set_address(self, line, address):
-        if line == 'conveyor_address' and address is not None:
-            self.conveyor_address = address
-        elif line == 'conveyor_port' and address is not None:
-            self.conveyor_port = address
-        elif line == 'sorter_address' and address is not None:
-            self.sorter_address = address
-        elif line == 'sorter_port' and address is not None:
-            self.sorter_port = address
+                new_cup = Cup()
+                new_cup.init(line, data[line]['position'])
+                for brick in data[line]['bricks']:
+                    new_cup.add_part(brick)
+                self.cups.append(new_cup)
 
     def set_name(self, name):
         self.name = str(name)
@@ -112,8 +89,3 @@ class Config(ButtonBehavior, BoxLayout):
             self.add_widget(Label(text=self.name + ' (Default)'))
         else:
             self.add_widget(Label(text=self.name))
-
-    @staticmethod
-    def line_is_cup(line):
-        return line == 'conveyor_address' or line == 'conveyor_port' \
-               or line == 'sorter_address' or line == 'sorter_port'

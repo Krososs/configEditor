@@ -17,6 +17,7 @@ class ConfigList(BoxLayout):
         self.mainScreen = None
 
     def init(self, parent):
+        self.name.text = ""
         self.mainScreen = parent
         self.display_configs()
 
@@ -33,27 +34,15 @@ class ConfigList(BoxLayout):
     def save_new_config(self):
         if not os.path.exists(self.directory):
             os.makedirs(self.directory)
-        if (len(self.name.text) == 0
-                or len(self.conveyor_address.text) == 0 or len(self.conveyor_port.text) == 0
-                or len(self.sorter_address.text) == 0 or len(self.sorter_port.text) == 0):
-            self.error.text = "Fill in all fields"
+        if len(self.name.text) == 0:
+            self.error.text = "Name can not be empty"
         elif (os.path.exists(self.directory + '/' + self.name.text + '.json')):
             self.error.text = "File already exist"
         elif StringUtil.name_contains_forbidden_characters(self.name.text):
             self.error.text = "Name contains forbidden characters"
-        elif (StringUtil.wrong_address_format(self.conveyor_address.text) or StringUtil.wrong_address_format(
-                self.conveyor_port.text)
-              or StringUtil.wrong_address_format(self.sorter_address.text) or StringUtil.wrong_address_format(
-                    self.sorter_port.text)):
-            self.error.text = "Wrong address or port format"
         else:
             self.error.text = ""
-            data = {
-                "conveyor_address": str(self.conveyor_address.text).replace(" ", ""),
-                "conveyor_port": str(self.conveyor_port.text).replace(" ", ""),
-                "sorter_address": str(self.sorter_address.text).replace(" ", ""),
-                "sorter_port": str(self.sorter_port.text).replace(" ", "")
-            }
+            data = {}
             with open(self.directory + '/' + self.name.text + '.json', 'w', encoding='utf8') as json_file:
                 json.dump(data, json_file, indent=3, ensure_ascii=True)
             self.display_configs()

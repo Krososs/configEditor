@@ -14,18 +14,20 @@ class PartNode(BoxLayout):
         self.text = kwargs.pop('text', 'None')
         self.source = kwargs.pop('source', 'None')
         super(PartNode, self).__init__(**kwargs)
+        print("PartNode: constructor")
 
         self.height = dp(55)
         self.child_table = []
         self.image = None
         self._parent = None
+        self.parent_category = None
         if self.source is not None:
             self.image = AsyncImage(source=self.source)
             self.image.bind(on_touch_down=self.show_image)
 
         # make the parts of the node
         self.lbl = Label(text=self.text, size_hint_x=0.45)
-        self.checkbox = CheckBox(size_hint=(.55, 1), color=(1, 1, 1, 3.5))  # alpha=3.5 to make it more visible
+        self.checkbox = CheckBox(size_hint=(.55, 1), color=(1, 1, 1, 3.5))
         self.checkbox.bind(on_press=lambda instance: self.select_all_children())
         self.empty = BoxLayout()
 
@@ -47,16 +49,21 @@ class PartNode(BoxLayout):
 
     def select_all_children(self):
         parts = []
+        if len(self.child_table) == 0:
+            self.init()
         for ch in self.child_table:
             ch.set_checkbox(self.checkbox.active)
             parts.append(ch.text)
         if self.checkbox.active:
             if len(self.child_table) == 0:
                 parts.append(self.text)
+                if self.parent_category.all_children_selected():
+                    self.parent_category.set_checkbox(True)
             self._parent.add_parts(parts)
         else:
             if len(self.child_table) == 0:
                 parts.append(self.text)
+                self.parent_category.set_checkbox(False)
             self._parent.remove_parts(parts)
 
     def add___child(self, child):
@@ -66,6 +73,12 @@ class PartNode(BoxLayout):
 class PartTreeElement(PartNode, TreeViewNode):
     def set__parent(self, parent):
         self._parent = parent
+
+    def set_parent_category(self, parent_category):
+        self.parent_category = parent_category
+
+    def init(self):
+        pass
 
 
 class PartTreeNode(PartNode, TreeViewNode):
@@ -94,11 +107,12 @@ class PartTreeNode(PartNode, TreeViewNode):
         self.parts = parts
         self.blank = blank
 
-    # def add_part(self, part):
-    #     child = PartTreeElement(text=part['part_num'], source=part['part_img_url'])
-    #     child.set__parent(self._parent)
-    #     self.add___child(child)
-    #     self.tree.add_node(child, self.node)
+    def all_children_selected(self):
+        for ch in self.child_table:
+            if not ch.checkbox.active:
+                return False
+        return True
+
     def resize(self):
         self._parent.resize(len(self.child_table) * self.height)
 
@@ -109,6 +123,7 @@ class PartTreeNode(PartNode, TreeViewNode):
             if part['print_of'] is None:
                 child = PartTreeElement(text=part['part_num'], source=part['part_img_url'])
                 child.set__parent(self._parent)
+                child.set_parent_category(self)
                 self.add___child(child)
                 self.tree.add_node(child, self.node)
                 if part['part_num'] in selected_parts:

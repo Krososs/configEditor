@@ -3,7 +3,7 @@ import json
 import pickle
 
 
-def vaild_key(key):
+def valid_key(key):
     try:
         rebrick.init(key)
         rebrick.lego.get_categories()

@@ -7,10 +7,16 @@ from Utils.Database import Database
 class LoadingScreen(Screen):
     pass
 
+    def __init__(self, **kwargs):
+        super(LoadingScreen, self).__init__(**kwargs)
+        self.i = None
+        self.cat_arr = []
+        self.categories = None
+        self.get_category_trigger = None
+
     def on_enter(self):
         self.get_category_trigger = Clock.create_trigger(self.get_category)
         self.categories = LegoUtil.get_part_categories()
-        self.cat_arr = []
         self.i = 0
         self.get_category_trigger()
 

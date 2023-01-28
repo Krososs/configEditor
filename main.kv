@@ -63,10 +63,6 @@
 	name: "ConfigList"
 	error: error
 	name: name
-	conveyor_address: conveyor_address
-	conveyor_port: conveyor_port
-	sorter_address: sorter_address
-	sorter_port: sorter_port
 	scrollview: scrollview
 	BoxLayout:
 		size_hint: 1, 1
@@ -125,54 +121,6 @@
                         size_hint: .5, .6
                         pos_hint:{"y":.1}
                         multiline: False
-                BoxLayout:							#CONVEYOR ADDRESS
-                    size_hint: 1, .1
-                    orientation: "horizontal"
-                    Label:
-                        size_hint: .5, .6
-                        pos_hint:{"y":.1}
-                        text: "Conveyor address"
-                    TextInput:
-                        id: conveyor_address
-                        size_hint: .5, .6
-                        pos_hint:{"y":.1}
-                        multiline: False
-                BoxLayout:							#CONVEYOR PORT
-                    size_hint: 1, .1
-                    orientation: "horizontal"
-                    Label:
-                        size_hint: .5, .6
-                        pos_hint:{"y":.1}
-                        text: "Conveyor port"
-                    TextInput:
-                        id: conveyor_port
-                        size_hint: .5, .6
-                        pos_hint:{"y":.1}
-                        multiline: False
-                BoxLayout:							#SORTER ADDRESS
-                    size_hint: 1, .1
-                    orientation: "horizontal"
-                    Label:
-                        size_hint: .5, .6
-                        pos_hint:{"y":.1}
-                        text: "Sorter address"
-                    TextInput:
-                        id: sorter_address
-                        size_hint: .5, .6
-                        pos_hint:{"y":.1}
-                        multiline: False
-                BoxLayout:							#SORTER PORT
-                    size_hint: 1, .1
-                    orientation: "horizontal"
-                    Label:
-                        size_hint: .5, .6
-                        pos_hint:{"y":.1}
-                        text: "Sorter port"
-                    TextInput:
-                        id: sorter_port
-                        size_hint: .5, .6
-                        pos_hint:{"y":.1}
-                        multiline: False
                 FloatLayout:
                     size_hint: 1, .2
                     Button:
@@ -195,16 +143,10 @@
 <ConfigDetails>
 	name: "ConfigDetails"
 	config_name: config_name
-	conveyor_address: conveyor_address
-	conveyor_port: conveyor_port
-	sorter_address: sorter_address
-	sorter_port: sorter_port
-	save_button: save_button
 	default_button: default_button
 	scrollview: scrollview
 	cup_options: cup_options
 	list_name: list_name
-	error: error
 
 	BoxLayout:
 		size_hint: 1, 1
@@ -222,89 +164,11 @@
                 size_hint: 1, .1
                 Label:
                     id: config_name
-            BoxLayout:
-                size_hint: 1, .4
-                orientation: "vertical"
-                canvas.before:
-                    Color:
-                        rgba: (46/255,45/255,45/255,1)
-                    RoundedRectangle:
-                        pos: self.x+25, self.y
-                        size: self.width+25, self.height
-                        radius: [5]
-
-                BoxLayout:							#CONVEYOR ADDRESS
-                    size_hint: 1, .15
-                    orientation: "horizontal"
-                    Label:
-                        size_hint: .5, .6
-                        pos_hint:{"y":.1}
-                        text: "Conveyor address"
-                    TextInput:
-                        id: conveyor_address
-                        size_hint: .5, .5
-                        pos_hint:{"y":.1}
-                        multiline: False
-                        on_text: root.change_conveyor_address(self.text)
-                BoxLayout:							#CONVEYOR PORT
-                    size_hint: 1, .15
-                    orientation: "horizontal"
-                    Label:
-                        size_hint: .5, .6
-                        pos_hint:{"y":.1}
-                        text: "Conveyor port"
-                    TextInput:
-                        id: conveyor_port
-                        size_hint: .5, .5
-                        pos_hint:{"y":.1}
-                        multiline: False
-                        on_text: root.change_conveyor_port(self.text)
-                BoxLayout:							#SORTER ADDRESS
-                    size_hint: 1, .15
-                    orientation: "horizontal"
-                    Label:
-                        size_hint: .5, .6
-                        pos_hint:{"y":.1}
-                        text: "Sorter address"
-                    TextInput:
-                        id: sorter_address
-                        size_hint: .5, .5
-                        pos_hint:{"y":.1}
-                        multiline: False
-                        on_text: root.change_sorter_address(self.text)
-                BoxLayout:							#SORTER PORT
-                    size_hint: 1, .15
-                    orientation: "horizontal"
-                    Label:
-                        size_hint: .5, .6
-                        pos_hint:{"y":.1}
-                        text: "Sorter port"
-                    TextInput:
-                        id: sorter_port
-                        size_hint: .5, .5
-                        pos_hint:{"y":.1}
-                        multiline: False
-                        on_text: root.change_sorter_port(self.text)
-            BoxLayout:
-			    size_hint: 1, .1
-			    orientation: "vertical"
-			    Label:
-				    color: 1, 0, 0, 1
-				    id: error
-			FloatLayout:						#SAVE CHANGES BUTTON
-				size_hint: 1, .1
-				Button:
-					pos_hint:{"x":.25, "y":.2}
-					size_hint: .5, .6
-					background_color: (46/255,45/255,45/255,1)
-					text: "Save changes"
-					id: save_button
-					on_press: root.save_changes()
 			FloatLayout:						#SET AS DEFAULT BUTTON
 				size_hint: 1, .1
 				Button:
-					pos_hint:{"x":.25, "y":.2}
-					size_hint: .5, .6
+					pos_hint:{"x":.25, "y":.25}
+					size_hint: .5, .5
 					background_color: (46/255,45/255,45/255,1)
 					id: default_button
 					text: "Set as default"
@@ -312,24 +176,24 @@
 			FloatLayout:						#ADD CUP BUTTON
 				size_hint: 1, .1
 				Button:
-					pos_hint:{"x":.25, "y":.2}
-					size_hint: .5, .6
+					pos_hint:{"x":.25, "y":.25}
+					size_hint: .5, .5
 					background_color: (46/255,45/255,45/255,1)
 					text: "Add cup"
 					on_press: root.open_new_cup_popup()
 			FloatLayout:						#DELETE BUTTON
 				size_hint: 1, .1
 				Button:
-					pos_hint:{"x":.25, "y":.2}
-					size_hint: .5, .6
+					pos_hint:{"x":.25, "y":.25}
+					size_hint: .5, .5
 					background_color: (46/255,45/255,45/255,1)
 					text: "Delete"
 					on_press: root.open_delete_config_popup()
 			FloatLayout:						#BACK BUTTON
 				size_hint: 1, .1
 				Button:
-					pos_hint:{"x":.25, "y":.2}
-					size_hint: .5, .6
+					pos_hint:{"x":.25, "y":.25}
+					size_hint: .5, .5
 					background_color: (46/255,45/255,45/255,1)
 					text: "Back"
 					on_press: root.back_to_list()

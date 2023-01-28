@@ -10,7 +10,6 @@ from Utils.Database import Database
 from Widgets.Popups import NewCupPopup, DeleteCupPopup, \
     DeleteConfigPopup, ChangePositionPopup
 
-from Utils import StringUtil
 from Widgets.TreeView import PartTreeNode
 
 
@@ -25,76 +24,23 @@ class ConfigDetails(BoxLayout):
         self.popup = None
         self.categories = None
 
-        self.conveyor_address_ph = None
-        self.conveyor_port_ph = None
-        self.sorter_address_ph = None
-        self.sorter_port_ph = None
-
     def set_parent(self, parent):
         self._parent = parent
 
     def set_config(self, config):
         self.selectedConfig = config
-        self.conveyor_address_ph = self.selectedConfig.conveyor_address
-        self.conveyor_port_ph = self.selectedConfig.conveyor_port
-        self.sorter_address_ph = self.selectedConfig.sorter_address
-        self.sorter_port_ph = self.selectedConfig.sorter_port
-
-        self.conveyor_address.text = self.selectedConfig.conveyor_address
-        self.conveyor_port.text = self.selectedConfig.conveyor_port
-        self.sorter_address.text = self.selectedConfig.sorter_address
-        self.sorter_port.text = self.selectedConfig.sorter_port
-
-    # addresses change
-    def change_conveyor_address(self, text):
-        if text != self.selectedConfig.conveyor_address:
-            self.save_button.disabled = False
-            self.conveyor_address_ph = text
-
-    def change_conveyor_port(self, text):
-        if text != self.selectedConfig.conveyor_port:
-            self.save_button.disabled = False
-            self.conveyor_port_ph = text
-
-    def change_sorter_address(self, text):
-        if text != self.selectedConfig.sorter_address:
-            self.save_button.disabled = False
-            self.sorter_address_ph = text
-
-    def change_sorter_port(self, text):
-        if text != self.selectedConfig.sorter_port:
-            self.save_button.disabled = False
-            self.sorter_port_ph = text
-
-    def save_changes(self):
-        if (StringUtil.wrong_address_format(self.conveyor_address_ph) or StringUtil.wrong_address_format(
-                self.conveyor_port_ph)
-                or StringUtil.wrong_address_format(self.sorter_address_ph) or StringUtil.wrong_address_format(
-                    self.sorter_port_ph)):
-            self.error.text = "Wrong address or port format"
-        else:
-            self.error.text = ""
-            self.selectedConfig.set_address('conveyor_address',
-                                            self.conveyor_address_ph)
-            self.selectedConfig.set_address('conveyor_port', self.conveyor_port_ph)
-            self.selectedConfig.set_address('sorter_address',
-                                            self.sorter_address_ph)
-            self.selectedConfig.set_address('sorter_port', self.sorter_port_ph)
-            self.selectedConfig.save()
 
     def back_to_list(self):
         self.cup_options.clear_widgets()
         self._parent.show_config_list()
 
     def init(self):
-        self.save_button.disabled = True
         self.scrollview.scroll_y = 1
         self.layout.clear_widgets()
         self.scrollview.clear_widgets()
 
         self.config_name.text = self.selectedConfig.name
         self.list_name.text = 'Cups'
-        self.error.text = ''
 
         if self.selectedConfig.is_default():
             self.config_name.text += ' (Default)'
@@ -201,14 +147,15 @@ class ConfigDetails(BoxLayout):
 
     def show_cup_details(self, cup):
         self.selectedCup = cup
-        self.list_name.text = self.selectedCup.name + " (" + str(len(self.selectedCup.parts)) + ")"
+        self.update_list_details()
+        # self.list_name.text = self.selectedCup.name + " (" + str(len(self.selectedCup.parts)) + ")"
         self.scrollview.scroll_y = 1
         self.add_cup_options()
         self.layout.clear_widgets()
         self.scrollview.clear_widgets()
 
         _tree = TreeView(hide_root=True)
-        self.categories = Database.get_cagetogries().find()
+        self.categories = Database.get_categories().find()
         counter = 0
         for c in self.categories:
             node = PartTreeNode(text=c['Name'], source=None)
@@ -225,6 +172,9 @@ class ConfigDetails(BoxLayout):
         self.layout.add_widget(_tree)
         self.scrollview.add_widget(self.layout)
 
+    def update_list_details(self):
+        self.list_name.text = self.selectedCup.name + " (" + str(len(self.selectedCup.parts)) + ")"
+
     def resize(self, height):
         self.layout.height += height
 
@@ -234,11 +184,13 @@ class ConfigDetails(BoxLayout):
     def add_parts(self, parts):
         for b in parts:
             self.selectedCup.add_part(b)
+        self.update_list_details()
         self.selectedConfig.save()
 
     def remove_parts(self, bricks):
         for b in bricks:
             self.selectedCup.remove_part(b)
+        self.update_list_details()
         self.selectedConfig.save()
 
     def cup_contains_category(self, parts):
