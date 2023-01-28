@@ -1,4 +1,5 @@
 import pickle
+import os
 
 from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
@@ -9,9 +10,10 @@ from kivy.uix.treeview import TreeView
 from Utils.Database import Database
 from Utils.Constants import Constants
 from Widgets.Popups import NewCupPopup, DeleteCupPopup, \
-    DeleteConfigPopup, ChangePositionPopup
+    DeleteConfigPopup, ChangePositionPopup, SaveDialog
 
 from Widgets.TreeView import PartTreeNode
+from kivy.uix.popup import Popup
 
 
 class ConfigDetails(BoxLayout):
@@ -96,6 +98,10 @@ class ConfigDetails(BoxLayout):
 
     # Config option buttons
     def set_config_as_default(self):
+        content = SaveDialog(save=self.save)
+        self.popup = Popup(title="Save file", content=content,
+                           size_hint=(0.9, 0.9))
+        self.popup.open()
         self.config_name.text += ' (Default)'
         self.default_button.disabled = True
         with open('././settings.cfg', 'rb') as f:
@@ -103,6 +109,11 @@ class ConfigDetails(BoxLayout):
             with open('././settings.cfg', 'wb') as f:
                 data['default'] = self.selectedConfig.name
                 pickle.dump(data, f)
+
+    def save(self, path, filename):
+        with open(os.path.join(path, filename), 'w') as stream:
+            stream.write("Andrzej") #todo w środku są dane do zapisu, wpisywana nazwa to nazwa pliku
+        self.popup.dismiss()
 
     def open_new_cup_popup(self):
         self.popup = NewCupPopup()
