@@ -1,3 +1,5 @@
+from kivy.properties import ObjectProperty
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.uix.image import AsyncImage
 from Utils.Constants import Constants
@@ -68,3 +70,9 @@ class DeleteConfigPopup(Popup):
 
     def delete_config(self):
         self._parent.delete_config()
+
+
+class SaveDialog(FloatLayout):
+    save = ObjectProperty(None)
+    text_input = ObjectProperty(None)
+    cancel = ObjectProperty(None)

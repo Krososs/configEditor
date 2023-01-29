@@ -9,6 +9,8 @@ class Constants:
     STR_CHANGE_POSITION = "Change position"
     STR_DELETE = "Delete"
     STR_BACK = "Back"
+    STR_FILE_JSON = ".json"
+    STR_API_KEY = "API_KEY"
 
     ER_KEY_INVALID = "Provided key is invalid"
     ER_CUP_NAME_TAKEN = "Config already contains cup with given name"
@@ -17,5 +19,6 @@ class Constants:
     ER_NAME_EMPTY = "Name can not be empty"
     ER_DELETE_DEFAULT = "You can not delete default config"
     ER_FILE_EXIST = "File already exist"
+    ER_WRONG_DESTINATION = "Select destination"
     ER_FORBIDDEN_CHARS = "Name contains forbidden characters"
 

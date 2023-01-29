@@ -1,4 +1,5 @@
 import pickle
+import os
 
 from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
@@ -9,9 +10,10 @@ from kivy.uix.treeview import TreeView
 from Utils.Database import Database
 from Utils.Constants import Constants
 from Widgets.Popups import NewCupPopup, DeleteCupPopup, \
-    DeleteConfigPopup, ChangePositionPopup
+    DeleteConfigPopup, ChangePositionPopup, SaveDialog
 
 from Widgets.TreeView import PartTreeNode
+from kivy.uix.popup import Popup
 
 
 class ConfigDetails(BoxLayout):
@@ -41,13 +43,8 @@ class ConfigDetails(BoxLayout):
         self.scrollview.clear_widgets()
 
         self.config_name.text = self.selectedConfig.name
+        self.config_destination.text = self.selectedConfig.destination
         self.list_name.text = Constants.STR_CUPS
-
-        if self.selectedConfig.is_default():
-            self.config_name.text += ' (Default)'
-            self.default_button.disabled = True
-        else:
-            self.default_button.disabled = False
 
         self.layout.height = len(self.selectedConfig.cups) * 100
         for cup in self.selectedConfig.cups:
@@ -93,16 +90,6 @@ class ConfigDetails(BoxLayout):
             self.popup.dismiss()
             self.selectedConfig.delete()
             self._parent.show_config_list()
-
-    # Config option buttons
-    def set_config_as_default(self):
-        self.config_name.text += ' (Default)'
-        self.default_button.disabled = True
-        with open('././settings.cfg', 'rb') as f:
-            data = pickle.load(f)
-            with open('././settings.cfg', 'wb') as f:
-                data['default'] = self.selectedConfig.name
-                pickle.dump(data, f)
 
     def open_new_cup_popup(self):
         self.popup = NewCupPopup()
