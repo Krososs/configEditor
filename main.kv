@@ -78,7 +78,7 @@
                         size_hint: .5, .5
                         pos_hint:{"y":.1}
                         multiline: False
-                BoxLayout:
+                FloatLayout:
                     size_hint: 1, .1
                     orientation: "horizontal"
                     Button:
@@ -88,6 +88,8 @@
                         id: destination_button
                         text: "Select destination"
                         on_press: root.open_destination_popup()
+                BoxLayout:
+                    size_hint: 1, .1
                     Label:
                         pos_hint:{"x":.2, "y":.2}
                         size_hint: .6, .6
@@ -108,7 +110,7 @@
                         id: error
                         valign: 'top'
 			BoxLayout:
-				size_hint: 1, .4
+				size_hint: 1, .25
 		BoxLayout:
 		    size_hint: .1, 1
 <ConfigDetails>
@@ -138,9 +140,11 @@
                     font_size: 20
                     id: config_name
 			BoxLayout:						#SET AS DEFAULT BUTTON
-				size_hint: 1, .1
+				size_hint: .8, .1
+				pos_hint:{"x":.1}
 				Label:
                     font_size: 15
+                    text_size: self.size
                     id: config_destination
 			FloatLayout:						#ADD CUP BUTTON
 				size_hint: 1, .1
