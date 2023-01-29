@@ -43,13 +43,8 @@ class ConfigDetails(BoxLayout):
         self.scrollview.clear_widgets()
 
         self.config_name.text = self.selectedConfig.name
+        self.config_destination.text = self.selectedConfig.destination
         self.list_name.text = Constants.STR_CUPS
-
-        if self.selectedConfig.is_default():
-            self.config_name.text += ' (Default)'
-            self.default_button.disabled = True
-        else:
-            self.default_button.disabled = False
 
         self.layout.height = len(self.selectedConfig.cups) * 100
         for cup in self.selectedConfig.cups:
@@ -95,25 +90,6 @@ class ConfigDetails(BoxLayout):
             self.popup.dismiss()
             self.selectedConfig.delete()
             self._parent.show_config_list()
-
-    # Config option buttons
-    def set_config_as_default(self):
-        content = SaveDialog(save=self.save)
-        self.popup = Popup(title="Save file", content=content,
-                           size_hint=(0.9, 0.9))
-        self.popup.open()
-        self.config_name.text += ' (Default)'
-        self.default_button.disabled = True
-        with open('././settings.cfg', 'rb') as f:
-            data = pickle.load(f)
-            with open('././settings.cfg', 'wb') as f:
-                data['default'] = self.selectedConfig.name
-                pickle.dump(data, f)
-
-    def save(self, path, filename):
-        with open(os.path.join(path, filename), 'w') as stream:
-            stream.write("Andrzej") #todo w środku są dane do zapisu, wpisywana nazwa to nazwa pliku
-        self.popup.dismiss()
 
     def open_new_cup_popup(self):
         self.popup = NewCupPopup()

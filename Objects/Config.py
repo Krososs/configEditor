@@ -7,6 +7,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import ButtonBehavior
 
 from Objects.Cup import Cup
+from Utils.Constants import Constants
 
 
 class Config(ButtonBehavior, BoxLayout):
@@ -15,6 +16,7 @@ class Config(ButtonBehavior, BoxLayout):
         super(Config, self).__init__(**kwargs)
         self.cups = []
         self.name = None
+        self.destination = None
         self._parent = None
 
     def on_press(self):
@@ -50,30 +52,33 @@ class Config(ButtonBehavior, BoxLayout):
         self.save()
 
     def delete(self):
-
-        if os.path.exists(self._parent.directory + '/' + self.name
-                          + '.json'):
-            os.remove(self._parent.directory + '/' + self.name + '.json'
-                      )
+        if os.path.exists(self.destination + '/' + self.name + Constants.STR_FILE_JSON):
+            os.remove(self.destination + '/' + self.name + Constants.STR_FILE_JSON)
+            with open('././settings.cfg', 'rb') as f:
+                data = pickle.load(f)
+                del data[self.name + Constants.STR_FILE_JSON]
+                with open('././settings.cfg', 'wb') as f2:
+                    pickle.dump(data, f2)
 
     def save(self):
         data = {}
         for cup in self.cups:
             data[cup.name] = {'position': cup.position,
                               'bricks': cup.parts}
-
-        with open(self._parent.directory + '/' + self.name + '.json',
-                  'w+', encoding='utf8') as json_file:
+        with open(os.path.join(self.destination, self.name + Constants.STR_FILE_JSON), 'w+',
+                  encoding='utf8') as json_file:
             json.dump(data, json_file, indent=3, ensure_ascii=True)
 
     def load(
             self,
             data,
             name,
+            destination,
             parent,
     ):
         self._parent = parent
         self.set_name(name)
+        self.destination = destination
 
         if data is not None:
             for line in data:
@@ -84,8 +89,5 @@ class Config(ButtonBehavior, BoxLayout):
                 self.cups.append(new_cup)
 
     def set_name(self, name):
-        self.name = str(name)
-        if self.is_default():
-            self.add_widget(Label(text=self.name + ' (Default)', font_size=20))
-        else:
-            self.add_widget(Label(text=self.name, font_size=20))
+        self.name = name
+        self.add_widget(Label(text=self.name, font_size=20))

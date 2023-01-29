@@ -75,3 +75,4 @@ class DeleteConfigPopup(Popup):
 class SaveDialog(FloatLayout):
     save = ObjectProperty(None)
     text_input = ObjectProperty(None)
+    cancel = ObjectProperty(None)
