@@ -6,7 +6,7 @@ from Utils.Database import Database
 from Utils.Constants import Constants
 
 
-class DummyScreen(Screen):
+class DecisionScreen(Screen):
     def on_enter(self):
         Clock.schedule_once(self.switch_screen)
 
@@ -14,7 +14,7 @@ class DummyScreen(Screen):
         self.manager.transition = NoTransition()
 
         if not os.path.exists('././settings.cfg'):
-            data = dict(default='None', API_KEY='None')
+            data = dict(API_KEY='None')
             with open('././settings.cfg', 'wb') as f:
                 pickle.dump(data, f)
 
