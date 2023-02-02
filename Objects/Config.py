@@ -22,11 +22,6 @@ class Config(ButtonBehavior, BoxLayout):
     def on_press(self):
         self._parent.show_config_details(self)
 
-    def is_default(self):
-        with open('././settings.cfg', 'rb') as f:
-            data = pickle.load(f)
-        return data['default'] == self.name
-
     def add_cup(self, cup_name, cup_position):
         cup = Cup()
         cup.init(cup_name, cup_position)

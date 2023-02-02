@@ -77,13 +77,9 @@ class ConfigDetails(BoxLayout):
         self.init()
 
     def delete_config(self):
-        if self.selectedConfig.is_default():
-            self.popup.error.text = \
-                Constants.ER_DELETE_DEFAULT
-        else:
-            self.popup.dismiss()
-            self.selectedConfig.delete()
-            self._parent.show_config_list()
+        self.popup.dismiss()
+        self.selectedConfig.delete()
+        self._parent.show_config_list()
 
     def open_new_cup_popup(self):
         self.popup = NewCupPopup()
