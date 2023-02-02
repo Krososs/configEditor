@@ -1,6 +1,7 @@
 from kivy.uix.screenmanager import Screen
 from Widgets.ConfigList import ConfigList
 from Widgets.ConfigDetails import ConfigDetails
+from Utils.Database import Database
 
 
 class MainScreen(Screen):
@@ -8,9 +9,12 @@ class MainScreen(Screen):
         super(MainScreen, self).__init__(**kwargs)
         self.configList = ConfigList()
         self.configDetails = ConfigDetails()
+        self.categories = []
 
     def on_enter(self):
         self.show_config_list()
+        if len(self.categories) == 0:
+            self.categories = Database.get_categories().find()
 
     def show_config_list(self):
         self.bottom.clear_widgets()

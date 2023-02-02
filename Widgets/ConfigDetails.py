@@ -1,19 +1,14 @@
-import pickle
-import os
-
 from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.treeview import TreeView
 
-from Utils.Database import Database
 from Utils.Constants import Constants
 from Widgets.Popups import NewCupPopup, DeleteCupPopup, \
-    DeleteConfigPopup, ChangePositionPopup, SaveDialog
+    DeleteConfigPopup, ChangePositionPopup
 
 from Widgets.TreeView import PartTreeNode
-from kivy.uix.popup import Popup
 
 
 class ConfigDetails(BoxLayout):
@@ -25,7 +20,6 @@ class ConfigDetails(BoxLayout):
         self.selectedConfig = None
         self.selectedCup = None
         self.popup = None
-        self.categories = None
 
     def set_parent(self, parent):
         self._parent = parent
@@ -145,9 +139,8 @@ class ConfigDetails(BoxLayout):
         self.scrollview.clear_widgets()
 
         _tree = TreeView(hide_root=True)
-        self.categories = Database.get_categories().find()
         counter = 0
-        for c in self.categories:
+        for c in self._parent.categories:
             node = PartTreeNode(text=c['Name'], source=None)
             n = _tree.add_node(node)
             child = PartTreeNode(text="partBlank", source=None)
@@ -157,7 +150,6 @@ class ConfigDetails(BoxLayout):
                 node.checkbox.active = True
             _tree.add_node(child, n)
             counter += 1
-
         self.layout.height = counter * dp(55)
         self.layout.add_widget(_tree)
         self.scrollview.add_widget(self.layout)
