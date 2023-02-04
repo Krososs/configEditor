@@ -24,7 +24,6 @@ class LoadingScreen(Screen):
     def get_category(self, dt):
         if self.i < len(self.categories):
             if self.categories[self.i]['name'] != 'Non-LEGO':
-                print(self.categories[self.i]['name'])
                 self.ids.progress.value = self.i
                 category = {
                     'Id': self.categories[self.i]['id'],
