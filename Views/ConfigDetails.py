@@ -5,10 +5,10 @@ from kivy.uix.button import Button
 from kivy.uix.treeview import TreeView
 
 from Utils.Constants import Constants
-from Widgets.Popups import NewContainerPopup, DeleteContainerPopup, \
+from Views.Popups import NewContainerPopup, DeleteContainerPopup, \
     DeleteConfigPopup, ChangePositionPopup
 
-from Widgets.TreeView import PartTreeNode
+from Views.TreeView import PartTreeNode
 
 
 class ConfigDetails(BoxLayout):

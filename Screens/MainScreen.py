@@ -1,6 +1,6 @@
 from kivy.uix.screenmanager import Screen
-from Widgets.ConfigList import ConfigList
-from Widgets.ConfigDetails import ConfigDetails
+from Views.ConfigList import ConfigList
+from Views.ConfigDetails import ConfigDetails
 from Utils.Database import Database
 
 

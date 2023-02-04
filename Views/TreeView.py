@@ -5,7 +5,7 @@ from kivy.uix.label import Label
 from kivy.uix.treeview import TreeViewNode
 from kivy.uix.image import AsyncImage
 
-from Widgets.Popups import ImagePopup
+from Views.Popups import ImagePopup
 
 
 class PartNode(BoxLayout):
