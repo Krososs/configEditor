@@ -136,7 +136,7 @@ class ConfigDetails(BoxLayout):
 
         _tree = TreeView(hide_root=True)
         counter = 0
-        for c in self._parent.categories:
+        for c in self._parent.categories.find():
             node = PartTreeNode(text=c['Name'], source=None)
             n = _tree.add_node(node)
             child = PartTreeNode(text="partBlank", source=None)
@@ -146,6 +146,7 @@ class ConfigDetails(BoxLayout):
                 node.checkbox.active = True
             _tree.add_node(child, n)
             counter += 1
+        print(str(counter))
         self.layout.height = counter * dp(55)
         self.layout.add_widget(_tree)
         self.scrollview.add_widget(self.layout)

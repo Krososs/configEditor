@@ -9,12 +9,12 @@ class MainScreen(Screen):
         super(MainScreen, self).__init__(**kwargs)
         self.configList = ConfigList()
         self.configDetails = ConfigDetails()
-        self.categories = []
+        self.categories = None
 
     def on_enter(self):
         self.show_config_list()
-        if len(self.categories) == 0:
-            self.categories = Database.get_categories().find()
+        if self.categories is None:
+            self.categories = Database.get_categories()
 
     def show_config_list(self):
         self.bottom.clear_widgets()
