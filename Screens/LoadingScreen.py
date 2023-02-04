@@ -35,5 +35,5 @@ class LoadingScreen(Screen):
             self.i += 1
             self.get_category_trigger()
         else:
-            Database.create_databse(self.cat_arr)
+            Database.create_database(self.cat_arr)
             self.manager.current = Constants.SCREEN_BASIC
