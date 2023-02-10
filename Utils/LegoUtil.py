@@ -31,12 +31,19 @@ def get_part_categories():
     return json.loads(rebrick.lego.get_categories().read())["results"]
 
 
-def get_parts(categoryId):
-    rebrick.init(get_key())
-    response = rebrick.lego.get_parts(part_cat_id=categoryId)
-    parts = json.loads(response.read())["results"]
+def get_parts(category_id):
+    page_id = 1
+    next_page = True
     filtered = []
-    for part in parts:
-        if part['print_of'] is None:
-            filtered.append(part)
+    rebrick.init(get_key())
+    while next_page:
+        response = rebrick.lego.get_parts(page=str(page_id), page_size=1000, part_cat_id=category_id)
+        data = json.loads(response.read())
+        parts = data["results"]
+        for part in parts:
+            if part['print_of'] is None:
+                filtered.append(part)
+        if data["next"] is None:
+            next_page = False
+        page_id += 1
     return filtered

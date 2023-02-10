@@ -5,6 +5,3 @@ def name_contains_forbidden_characters(name):
             return True
     return False
 
-
-def wrong_address_format(address):
-    return any(c.isalpha() or c == ' ' for c in address)

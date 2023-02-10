@@ -23,15 +23,16 @@ class LoadingScreen(Screen):
 
     def get_category(self, dt):
         if self.i < len(self.categories):
-            self.ids.progress.value = self.i
-            category = {
-                'Id': self.categories[self.i]['id'],
-                'Name': self.categories[self.i]['name'],
-                'Parts': LegoUtil.get_parts(self.categories[self.i]['id'])
-            }
-            self.cat_arr.append(category)
+            if self.categories[self.i]['name'] != 'Non-LEGO':
+                self.ids.progress.value = self.i
+                category = {
+                    'Id': self.categories[self.i]['id'],
+                    'Name': self.categories[self.i]['name'],
+                    'Parts': LegoUtil.get_parts(self.categories[self.i]['id'])
+                }
+                self.cat_arr.append(category)
             self.i += 1
             self.get_category_trigger()
         else:
-            Database.create_databse(self.cat_arr)
+            Database.create_database(self.cat_arr)
             self.manager.current = Constants.SCREEN_BASIC

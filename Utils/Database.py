@@ -14,7 +14,7 @@ class Database:
         return Constants.DB_NAME in client.list_database_names()
 
     @staticmethod
-    def create_databse(data):
+    def create_database(data):
         db = client.ConfigEditor
         categories = db.categories
         for category in data:

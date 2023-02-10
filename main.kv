@@ -5,7 +5,7 @@
 		RoundedRectangle:
 			pos: self.pos
 			size: self.size
-<Cup>
+<Container>
 	canvas.before:
 		Color:
 			rgba: (48/255,48/255,50/255,1)
@@ -118,9 +118,8 @@
 	config_name: config_name
 	config_destination: config_destination
 	scrollview: scrollview
-	cup_options: cup_options
+	container_options: container_options
 	list_name: list_name
-	#position: position
 
 	BoxLayout:
 		size_hint: 1, 1
@@ -146,14 +145,14 @@
                     font_size: 15
                     text_size: self.size
                     id: config_destination
-			FloatLayout:						#ADD CUP BUTTON
+			FloatLayout:						#ADD CONTAINER BUTTON
 				size_hint: 1, .1
 				Button:
 					pos_hint:{"x":.2, "y":.25}
 					size_hint: .6, .5
 					background_color: (46/255,45/255,45/255,1)
-					text: "Add cup"
-					on_press: root.open_new_cup_popup()
+					text: "Add container"
+					on_press: root.open_new_container_popup()
 			FloatLayout:						#DELETE BUTTON
 				size_hint: 1, .1
 				Button:
@@ -170,7 +169,7 @@
 					background_color: (46/255,45/255,45/255,1)
 					text: "Back"
 					on_press: root.back_to_list()
-			FloatLayout:						#ADD CUP BUTTON
+			FloatLayout:						#ADD CONTAINER BUTTON
 				size_hint: 1, .5
 		BoxLayout:
 			size_hint: .8, 1
@@ -182,6 +181,7 @@
 			ScrollView:
 				id: scrollview
 				size_hint: 1, .8
+				scroll_wheel_distance: 200
 				canvas.before:
 		            Color:
 			            rgba: (46/255,45/255,45/255,0.5)
@@ -189,7 +189,7 @@
                         pos: self.pos
                         size: self.size
 			BoxLayout:
-				id: cup_options
+				id: container_options
 				size_hint: 1, .1
 
 
@@ -201,7 +201,7 @@
         orientation: "vertical"
         canvas.before:
 			Color:
-				rgba: (90/255,90/255,90/255,1)
+				rgba: (52/255,56/255,64/255,1)
 			Rectangle:
 				pos: self.pos
 				size: self.size
@@ -229,7 +229,7 @@
         orientation: "vertical"
         canvas.before:
 			Color:
-				rgba: (90/255,90/255,90/255,1)
+				rgba: (52/255,56/255,64/255,1)
 			Rectangle:
 				pos: self.pos
 				size: self.size
@@ -289,7 +289,7 @@
 						pos: self.pos
 						size: self.size
 
-<NewCupPopup>:
+<NewContainerPopup>:
     title: ""
     title_size: root.height *.01
     multiline: False
@@ -337,7 +337,7 @@
 				pos_hint:{"x":.3, "y":.1}
 				size_hint: .4, .8
 				text: "Ok"
-				on_press: root.add_cup()
+				on_press: root.add_container()
 		FloatLayout:
 			size_hint: 1, .25
 			Button:
@@ -383,7 +383,7 @@
 				pos_hint:{"x":.3, "y":.1}
 				size_hint: .4, .8
 				text: "Ok"
-				on_press: root.change_cup_position()
+				on_press: root.change_container_position()
 		FloatLayout:
 			size_hint: 1, .2
 			Button:
@@ -392,7 +392,7 @@
 				text: "Cancel"
 				on_press: root.dismiss()
 
-<DeleteCupPopup>:
+<DeleteContainerPopup>:
 	title: ""
 	title_size: root.height *.05
 	multiline: False
@@ -413,7 +413,7 @@
 				pos_hint:{"x":.3, "y":.1}
 				size_hint: .4, .8
 				text: "Ok"
-				on_press: root.delete_cup()
+				on_press: root.delete_container()
 		FloatLayout:
 			size_hint: 1, .5
 			Button:
@@ -480,7 +480,7 @@
         size: root.size
         pos: root.pos
         orientation: "vertical"
-        FileChooserListView:
+        FileChooserIconView:
             id: filechooser
         BoxLayout:
             size_hint_y: None

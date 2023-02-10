@@ -26,38 +26,38 @@ class ChangePositionPopup(Popup):
     def set_parent(self, parent):
         self._parent = parent
 
-    def change_cup_position(self):
-        self._parent.change_cup_position(self.position.text)
+    def change_container_position(self):
+        self._parent.change_container_position(self.position.text)
 
 
-class DeleteCupPopup(Popup):
+class DeleteContainerPopup(Popup):
     def __init__(self, **kwargs):
-        super(DeleteCupPopup, self).__init__(**kwargs)
+        super(DeleteContainerPopup, self).__init__(**kwargs)
         self._parent = None
 
     def set_parent(self, parent):
         self._parent = parent
 
-    def delete_cup(self):
+    def delete_container(self):
         self.dismiss()
-        self._parent.delete_cup()
+        self._parent.delete_container()
 
 
-class NewCupPopup(Popup):
+class NewContainerPopup(Popup):
     def __init__(self, **kwargs):
-        super(NewCupPopup, self).__init__(**kwargs)
+        super(NewContainerPopup, self).__init__(**kwargs)
         self._parent = None
 
     def set_parent(self, parent):
         self._parent = parent
 
-    def add_cup(self):
+    def add_container(self):
         if len(self.name.text) == 0:
             self.error.text = Constants.ER_NAME_EMPTY
         elif len(self.position.text) == 0:
             self.error.text = Constants.ER_POSITION_EMPTY
         else:
-            self._parent.add_new_cup(self.name.text, self.position.text)
+            self._parent.add_new_container(self.name.text, self.position.text)
 
 
 class DeleteConfigPopup(Popup):

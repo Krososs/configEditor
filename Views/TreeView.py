@@ -5,7 +5,7 @@ from kivy.uix.label import Label
 from kivy.uix.treeview import TreeViewNode
 from kivy.uix.image import AsyncImage
 
-from Widgets.Popups import ImagePopup
+from Views.Popups import ImagePopup
 
 
 class PartNode(BoxLayout):
@@ -24,13 +24,11 @@ class PartNode(BoxLayout):
             self.image = AsyncImage(source=self.source)
             self.image.bind(on_touch_down=self.show_image)
 
-        # make the parts of the node
         self.lbl = Label(text=self.text, size_hint_x=0.45)
         self.checkbox = CheckBox(size_hint=(.55, 1), color=(1, 1, 1, 3.5))
         self.checkbox.bind(on_press=lambda instance: self.select_all_children())
         self.empty = BoxLayout()
 
-        # add the parts to the BoxLayout
         self.add_widget(BoxLayout(size_hint=(.25, 1)))
         self.add_widget(self.lbl)
         if self.source is not None:
@@ -89,8 +87,8 @@ class PartTreeNode(PartNode, TreeViewNode):
         self.parts = []
         self.blank = None
 
-    def _expand(self, object, isOpen):
-        if isOpen:
+    def _expand(self, object, is_open):
+        if is_open:
             if len(self.child_table) == 0:
                 self.init()
             self.resize()

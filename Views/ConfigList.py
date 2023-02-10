@@ -9,7 +9,7 @@ from kivy.uix.popup import Popup
 from Objects.Config import Config
 from Utils import StringUtil
 from Utils.Constants import Constants
-from Widgets.Popups import SaveDialog
+from Views.Popups import SaveDialog
 
 
 class ConfigList(BoxLayout):

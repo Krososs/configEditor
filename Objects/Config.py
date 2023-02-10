@@ -6,7 +6,7 @@ from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import ButtonBehavior
 
-from Objects.Cup import Cup
+from Objects.Container import Container
 from Utils.Constants import Constants
 
 
@@ -14,7 +14,7 @@ class Config(ButtonBehavior, BoxLayout):
 
     def __init__(self, **kwargs):
         super(Config, self).__init__(**kwargs)
-        self.cups = []
+        self.containers = []
         self.name = None
         self.destination = None
         self._parent = None
@@ -22,33 +22,28 @@ class Config(ButtonBehavior, BoxLayout):
     def on_press(self):
         self._parent.show_config_details(self)
 
-    def is_default(self):
-        with open('././settings.cfg', 'rb') as f:
-            data = pickle.load(f)
-        return data['default'] == self.name
-
-    def add_cup(self, cup_name, cup_position):
-        cup = Cup()
-        cup.init(cup_name, cup_position)
-        self.cups.append(cup)
+    def add_containers(self, container_name, container_position):
+        container = Container()
+        container.init(container_name, container_position)
+        self.containers.append(container)
         self.save()
 
-    def position_taken(self, cup_position):
-        for cup in self.cups:
-            if cup.position == int(cup_position):
+    def position_taken(self, container_position):
+        for container in self.containers:
+            if container.position == int(container_position):
                 return True
         return False
 
-    def config_includes_cup(self, cup_name):
-        for cup in self.cups:
-            if cup.name == cup_name:
+    def config_includes_container(self, container_name):
+        for container in self.containers:
+            if container.name == container_name:
                 return True
         return False
 
-    def delete_cup(self, cup_name):
-        for cup in self.cups:
-            if cup.name == cup_name:
-                self.cups.remove(cup)
+    def delete_container(self, container_name):
+        for container in self.containers:
+            if container.name == container_name:
+                self.containers.remove(container)
         self.save()
 
     def delete(self):
@@ -62,9 +57,9 @@ class Config(ButtonBehavior, BoxLayout):
 
     def save(self):
         data = {}
-        for cup in self.cups:
-            data[cup.name] = {'position': cup.position,
-                              'bricks': cup.parts}
+        for container in self.containers:
+            data[container.name] = {'position': container.position,
+                                    'bricks': container.parts}
         with open(os.path.join(self.destination, self.name + Constants.STR_FILE_JSON), 'w+',
                   encoding='utf8') as json_file:
             json.dump(data, json_file, indent=3, ensure_ascii=True)
@@ -82,11 +77,11 @@ class Config(ButtonBehavior, BoxLayout):
 
         if data is not None:
             for line in data:
-                new_cup = Cup()
-                new_cup.init(line, data[line]['position'])
+                new_container = Container()
+                new_container.init(line, data[line]['position'])
                 for brick in data[line]['bricks']:
-                    new_cup.add_part(brick)
-                self.cups.append(new_cup)
+                    new_container.add_part(brick)
+                self.containers.append(new_container)
 
     def set_name(self, name):
         self.name = name
